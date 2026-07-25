@@ -1,0 +1,529 @@
+/* ============================================================
+   ESTÂNCIA SANTA MÔNICA — GALERIA
+   Depende de style.css (carregado antes) para usar os tokens
+   já definidos em :root (cores, fontes, espaçamentos, sombras,
+   --ease, --radius-*, --header-h etc). Aqui só existem
+   componentes NOVOS, exclusivos desta página.
+
+   Índice:
+   1. Seção "Carrossel Premium"
+   2. Álbuns
+   3. Filtros
+   4. Grid de fotos (foto-card)
+   5. Lightbox
+   6. Responsividade
+   ============================================================ */
+
+
+/* ============================================================
+   1. CARROSSEL PREMIUM (autoplay, fade, setas, dots, swipe)
+   ============================================================ */
+.galeria-carrossel-section{
+  padding:var(--space-xl) 0;
+}
+
+.galeria-carrossel{
+  position:relative;
+  width:100%;
+  height:clamp(360px,55vw,620px);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  box-shadow:var(--shadow-strong);
+  background:var(--verde-950);
+}
+
+/* pausa o autoplay ao passar o mouse — controlado via JS,
+   mas a classe abaixo sinaliza visualmente o estado */
+.galeria-carrossel.pausado .carrossel-slide.ativo::after{
+  opacity:.05;
+}
+
+.carrossel-slide{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity 1s var(--ease);
+  pointer-events:none;
+}
+
+.carrossel-slide.ativo{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+}
+
+.carrossel-slide img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.carrossel-slide::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg, rgba(16,29,22,.05) 0%, rgba(16,29,22,.15) 45%, rgba(16,29,22,.92) 100%);
+  transition:opacity .4s;
+}
+
+.carrossel-slide-info{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:1;
+  padding:var(--space-lg) var(--space-md) var(--space-md);
+  color:var(--marfim);
+  max-width:640px;
+}
+
+.carrossel-slide-info span.eyebrow{ color:var(--dourado-400,var(--dourado-500)); }
+
+.carrossel-slide-info h3{
+  color:var(--branco);
+  font-family:var(--f-display);
+  font-size:clamp(1.6rem,3vw,2.4rem);
+  margin-bottom:.5rem;
+  text-shadow:0 4px 20px rgba(0,0,0,.3);
+}
+
+.carrossel-slide-info p{
+  color:rgba(245,241,230,.85);
+  font-size:1rem;
+  margin-bottom:var(--space-sm);
+  max-width:520px;
+}
+
+/* Setas — reaproveitam o visual de .seta (style.css),
+   apenas maiores e sempre visíveis nesta seção */
+.galeria-carrossel .seta{
+  opacity:1;
+  width:44px;
+  height:44px;
+  z-index:2;
+}
+
+.galeria-carrossel .seta-prev{ left:16px; }
+.galeria-carrossel .seta-next{ right:16px; }
+
+.carrossel-indicadores-premium{
+  position:absolute;
+  bottom:18px;
+  right:24px;
+  z-index:2;
+  display:flex;
+  gap:6px;
+}
+
+/* reaproveita .indicador / .indicador.ativo já definidos em style.css */
+
+.carrossel-progresso{
+  position:absolute;
+  top:0;
+  left:0;
+  height:3px;
+  background:var(--dourado-500);
+  z-index:2;
+  transition:width linear;
+}
+
+
+/* ============================================================
+   2. ÁLBUNS
+   ============================================================ */
+.galeria-albuns{
+  padding:var(--space-xl) 0;
+}
+
+.albuns-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:var(--space-sm);
+}
+
+.album-card{
+  position:relative;
+  display:block;
+  border-radius:var(--radius-md);
+  overflow:hidden;
+  height:200px;
+  cursor:pointer;
+  border:none;
+  padding:0;
+  isolation:isolate;
+  box-shadow:var(--shadow-soft);
+  transition:transform .45s var(--ease), box-shadow .45s var(--ease);
+}
+
+.album-card:hover{
+  transform:translateY(-6px);
+  box-shadow:var(--shadow-strong);
+}
+
+.album-card img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:-2;
+  transition:transform .7s var(--ease);
+}
+
+.album-card:hover img{
+  transform:scale(1.1);
+}
+
+.album-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  background:linear-gradient(180deg, rgba(16,29,22,.1) 0%, rgba(16,29,22,.85) 100%);
+}
+
+.album-card span{
+  position:absolute;
+  left:var(--space-sm);
+  bottom:var(--space-sm);
+  color:var(--branco);
+  font-family:var(--f-display);
+  font-weight:600;
+  font-size:1.1rem;
+  text-shadow:0 2px 10px rgba(0,0,0,.35);
+}
+
+.album-card.ativo{
+  outline:2px solid var(--dourado-600);
+  outline-offset:3px;
+}
+
+
+/* ============================================================
+   3. FILTROS
+   ============================================================ */
+.galeria-filtros{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:.6rem;
+  margin-bottom:var(--space-md);
+}
+
+.filtro-btn{
+  font-family:var(--f-body);
+  font-weight:600;
+  font-size:.85rem;
+  letter-spacing:.02em;
+  color:var(--verde-800);
+  background:var(--branco);
+  border:1px solid rgba(31,58,46,.15);
+  border-radius:100px;
+  padding:10px 22px;
+  cursor:pointer;
+  transition:background .3s, color .3s, border-color .3s, transform .3s;
+}
+
+.filtro-btn:hover{
+  transform:translateY(-2px);
+  border-color:var(--dourado-600);
+}
+
+.filtro-btn.ativo{
+  background:var(--verde-900);
+  color:var(--marfim);
+  border-color:var(--verde-900);
+}
+
+
+/* ============================================================
+   4. GRID DE FOTOS
+   ============================================================ */
+.galeria-grid-section{
+  padding:var(--space-xl) 0;
+}
+
+.galeria-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:var(--space-sm);
+}
+
+.foto-card{
+  position:relative;
+  border-radius:var(--radius-md);
+  overflow:hidden;
+  aspect-ratio:4/5;
+  box-shadow:var(--shadow-soft);
+  cursor:pointer;
+  transition:opacity .4s var(--ease), transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+
+.foto-card:hover{
+  box-shadow:var(--shadow-strong);
+  transform:translateY(-4px);
+}
+
+.foto-card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform .6s var(--ease);
+}
+
+.foto-card:hover img{
+  transform:scale(1.08);
+}
+
+.foto-card .info{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  padding:var(--space-sm) var(--space-xs) var(--space-xs);
+  background:linear-gradient(180deg, transparent 0%, rgba(16,29,22,.9) 100%);
+  color:var(--marfim);
+  transform:translateY(8px);
+  opacity:.92;
+  transition:transform .4s var(--ease);
+}
+
+.foto-card:hover .info{
+  transform:translateY(0);
+  opacity:1;
+}
+
+.foto-card .info h3{
+  font-family:var(--f-display);
+  color:var(--branco);
+  font-size:1rem;
+  margin-bottom:2px;
+}
+
+.foto-card .info span{
+  font-family:var(--f-mono);
+  font-size:.7rem;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--dourado-400,var(--dourado-500));
+}
+
+/* estado ocultado pelos filtros — some com fade + encolhe do fluxo */
+.foto-card.is-hidden{
+  display:none;
+}
+
+.foto-card.is-entering{
+  animation:fotoEntrar .5s var(--ease);
+}
+
+@keyframes fotoEntrar{
+  from{ opacity:0; transform:translateY(16px) scale(.97); }
+  to{ opacity:1; transform:translateY(0) scale(1); }
+}
+
+
+/* ============================================================
+   5. LIGHTBOX
+   ============================================================ */
+.lightbox{
+  position:fixed;
+  inset:0;
+  z-index:2000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(16,29,22,.94);
+  backdrop-filter:blur(6px);
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .35s var(--ease), visibility .35s;
+  padding:var(--space-sm);
+}
+
+.lightbox.aberto{
+  opacity:1;
+  visibility:visible;
+}
+
+.lightbox-conteudo{
+  position:relative;
+  max-width:min(1100px,92vw);
+  max-height:88vh;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  transform:scale(.94);
+  transition:transform .35s var(--ease);
+}
+
+.lightbox.aberto .lightbox-conteudo{
+  transform:scale(1);
+}
+
+.lightbox-conteudo img{
+  max-width:100%;
+  max-height:70vh;
+  width:auto;
+  height:auto;
+  object-fit:contain;
+  border-radius:var(--radius-md);
+  box-shadow:var(--shadow-strong);
+  cursor:zoom-in;
+  transition:transform .4s var(--ease);
+}
+
+.lightbox-conteudo img.zoom{
+  transform:scale(1.6);
+  cursor:zoom-out;
+}
+
+.lightbox-legenda{
+  margin-top:var(--space-sm);
+  text-align:center;
+  color:var(--marfim);
+  max-width:640px;
+}
+
+.lightbox-legenda h3{
+  color:var(--branco);
+  font-family:var(--f-display);
+  font-size:1.3rem;
+  margin-bottom:.3rem;
+}
+
+.lightbox-legenda span{
+  font-family:var(--f-mono);
+  font-size:.75rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--dourado-400,var(--dourado-500));
+}
+
+.lightbox-fechar,
+.lightbox-seta{
+  position:absolute;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:none;
+  border-radius:50%;
+  background:rgba(245,241,230,.12);
+  color:var(--marfim);
+  cursor:pointer;
+  transition:background .25s, transform .25s;
+}
+
+.lightbox-fechar:hover,
+.lightbox-seta:hover{
+  background:rgba(245,241,230,.28);
+}
+
+.lightbox-fechar{
+  top:calc(-1 * var(--space-md));
+  right:0;
+  width:40px;
+  height:40px;
+  font-size:1.3rem;
+}
+
+.lightbox-seta{
+  top:50%;
+  transform:translateY(-50%);
+  width:52px;
+  height:52px;
+  font-size:1.6rem;
+}
+
+.lightbox-seta:hover{
+  transform:translateY(-50%) scale(1.06);
+}
+
+.lightbox-prev{ left:calc(-1 * var(--space-lg)); }
+.lightbox-next{ right:calc(-1 * var(--space-lg)); }
+
+.lightbox-contador{
+  position:absolute;
+  top:calc(-1 * var(--space-md));
+  left:0;
+  font-family:var(--f-mono);
+  font-size:.75rem;
+  color:rgba(245,241,230,.7);
+  letter-spacing:.06em;
+}
+
+
+/* ============================================================
+   6. RESPONSIVIDADE
+   ============================================================ */
+@media(max-width:1200px){
+  .lightbox-prev{ left:0; }
+  .lightbox-next{ right:0; }
+}
+
+@media(max-width:992px){
+
+  .galeria-grid{ grid-template-columns:repeat(3,1fr); }
+  .albuns-grid{ grid-template-columns:repeat(2,1fr); }
+
+  .galeria-carrossel{ height:clamp(320px,60vw,480px); }
+
+  .lightbox-conteudo{ max-width:94vw; }
+  .lightbox-prev{ left:-6px; }
+  .lightbox-next{ right:-6px; }
+}
+
+@media(max-width:768px){
+
+  .galeria-grid{ grid-template-columns:repeat(2,1fr); gap:var(--space-xs); }
+  .albuns-grid{ grid-template-columns:repeat(2,1fr); }
+
+  .galeria-filtros{ justify-content:flex-start; overflow-x:auto; flex-wrap:nowrap; padding-bottom:6px; -webkit-overflow-scrolling:touch; }
+  .filtro-btn{ flex:0 0 auto; }
+
+  .galeria-carrossel{ height:clamp(280px,70vw,420px); border-radius:var(--radius-md); }
+  .galeria-carrossel .seta{ width:38px; height:38px; }
+  .carrossel-slide-info{ padding:var(--space-md) var(--space-sm) var(--space-sm); }
+  .carrossel-slide-info h3{ font-size:1.4rem; }
+  .carrossel-slide-info p{ display:none; }
+
+  .lightbox-seta{ width:42px; height:42px; font-size:1.3rem; }
+  .lightbox-prev{ left:-4px; }
+  .lightbox-next{ right:-4px; }
+  .lightbox-fechar{ top:-44px; }
+  .lightbox-contador{ top:-44px; }
+}
+
+@media(max-width:576px){
+
+  .galeria-grid{ grid-template-columns:repeat(2,1fr); }
+  .albuns-grid{ grid-template-columns:1fr 1fr; }
+  .album-card{ height:150px; }
+
+  .galeria-carrossel-section,
+  .galeria-albuns,
+  .galeria-grid-section{ padding:var(--space-lg) 0; }
+}
+
+@media(max-width:430px){
+
+  .galeria-grid{ gap:8px; }
+  .foto-card .info h3{ font-size:.88rem; }
+  .foto-card .info span{ font-size:.62rem; }
+
+  .lightbox-legenda h3{ font-size:1.1rem; }
+  .lightbox-conteudo img{ max-height:60vh; }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .carrossel-slide,
+  .foto-card,
+  .foto-card img,
+  .album-card img,
+  .lightbox,
+  .lightbox-conteudo{ transition:none !important; animation:none !important; }
+}

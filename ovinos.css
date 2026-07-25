@@ -1,0 +1,429 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+body{
+
+    background:#bdbdbd;
+    font-family:Poppins,sans-serif;
+
+    animation:fadePagina .7s ease;
+
+}
+
+@keyframes fadePagina{
+
+    from{
+
+        opacity:0;
+
+    }
+
+    to{
+
+        opacity:1;
+
+    }
+
+}
+
+.banner-contato{
+
+margin-top:90px;
+
+min-height:250px;
+max-height: 100px;
+background-image:
+linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
+url("./img/carneiros2.png");
+
+background-size:cover;
+
+background-position:center;
+
+background-repeat:no-repeat;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+text-align:center;
+
+
+}
+.overlay{
+
+    width:100%;
+    height:100%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+
+    padding:20px;
+
+    animation:fade 1.2s;
+    
+}
+.overlay h1{
+
+    color:#fff;
+    font-size:70px;
+    text-align:center;
+    max-width:700px;
+
+}
+.overlay p{
+
+    color:#fff;
+    font-size:15px;
+    text-align:center;
+    max-width:700px;
+
+}
+
+.catalogo{
+    width:90%;
+    max-width:1300px;
+    margin:40px auto 80px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.animal{
+
+    background:#e4e3e3;
+
+    border-radius:12px;
+
+    overflow:hidden;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+.animal:hover{
+
+    transform:translateY(-8px);
+
+}
+
+/* ===== Carrossel de fotos (3 fotos por anúncio) ===== */
+
+.foto-carrossel{
+    position:relative;
+    width:100%;
+    height:250px;
+    overflow:hidden;
+}
+
+.foto-track{
+    display:flex;
+    width:100%;
+    height:100%;
+    transition:transform .45s cubic-bezier(.4,0,.2,1);
+}
+
+.foto-track img{
+    flex:0 0 100%;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    user-select:none;
+    -webkit-user-drag:none;
+}
+
+.seta{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:34px;
+    height:34px;
+    border:none;
+    border-radius:50%;
+    background:rgba(255,255,255,.8);
+    backdrop-filter:blur(3px);
+    -webkit-backdrop-filter:blur(3px);
+    box-shadow:0 2px 8px rgba(0,0,0,.18);
+    color:#2f6b2f;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    padding:0;
+    transition:background .25s, transform .25s, opacity .25s;
+}
+
+.seta svg{
+    width:16px;
+    height:16px;
+    pointer-events:none;
+}
+
+.seta:hover{
+    background:#fff;
+    transform:translateY(-50%) scale(1.08);
+}
+
+.seta:focus-visible,
+.indicador:focus-visible{
+    outline:2px solid #2f6b2f;
+    outline-offset:2px;
+}
+
+.seta-prev{
+    left:10px;
+}
+
+.seta-next{
+    right:10px;
+}
+
+@media(hover:hover) and (pointer:fine){
+
+    .seta{
+        opacity:0;
+    }
+
+    .foto-carrossel:hover .seta{
+        opacity:1;
+    }
+
+}
+
+.carrossel-indicadores{
+    position:absolute;
+    bottom:0;
+    left:0;
+    right:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:6px;
+    padding:18px 10px 10px;
+    background:linear-gradient(to top, rgba(0,0,0,.4), transparent);
+}
+
+.indicador{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    border:none;
+    background:rgba(255,255,255,.6);
+    padding:0;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.indicador.ativo{
+    width:16px;
+    border-radius:3px;
+    background:#fff;
+}
+
+@media(prefers-reduced-motion:reduce){
+
+    .foto-track{
+        transition:none;
+    }
+
+}
+
+/* ===== Fim do carrossel ===== */
+
+.animal h2{
+
+    color:#2f6b2f;
+
+    margin:20px;
+
+}
+
+.animal p{
+
+    margin:8px 20px;
+
+    color:#555;
+
+}
+
+.animal h3{
+
+    margin:20px;
+
+    color:#d4a017;
+
+    font-size:28px;
+
+}
+
+.animal a{
+
+    display:block;
+
+    margin:20px;
+
+    text-align:center;
+
+    background:#2f6b2f;
+
+    color:white;
+
+    text-decoration:none;
+
+    padding:14px;
+
+    border-radius:6px;
+
+    transition:.3s;
+
+}
+
+.animal a:hover{
+
+    background:#234f23;
+
+}
+.comprar{
+
+    display:block;
+
+    background:#25D366;
+
+    color:white;
+
+    text-align:center;
+
+    padding:15px;
+
+    text-decoration:none;
+
+    border-radius:8px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.comprar:hover{
+
+    background:#1fa851;
+
+    transform:translateY(-2px);
+}
+
+@media(max-width:900px){
+
+.banner-contato{
+
+    min-height:220px;
+
+}
+
+.overlay h1{
+
+    font-size:48px;
+
+}
+
+.overlay p{
+
+    font-size:17px;
+
+    padding:0 20px;
+
+}
+
+.catalogo{
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:16px;
+
+    margin:30px auto 50px;
+
+}
+
+}
+
+@media(max-width:480px){
+
+.banner-contato{
+
+    min-height:180px;
+
+}
+
+.overlay h1{
+
+    font-size:34px;
+
+}
+
+.overlay p{
+
+    font-size:14px;
+
+}
+
+.catalogo{
+
+    grid-template-columns:1fr;
+
+    width:92%;
+
+    gap:14px;
+
+}
+
+.foto-carrossel{
+
+    height:220px;
+
+}
+
+.seta{
+
+    width:28px;
+
+    height:28px;
+
+}
+
+.seta svg{
+
+    width:14px;
+
+    height:14px;
+
+}
+
+.animal h2{
+
+    margin:16px;
+
+}
+
+.animal p{
+
+    margin:6px 16px;
+
+}
+
+.animal h3{
+
+    margin:16px;
+
+    font-size:24px;
+
+}
+
+}
